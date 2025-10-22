@@ -7,7 +7,7 @@ const cidManager = new CIDManager();
 
 app.use(express.json());
 
-app.get("/health", (req: Request, res: Response) => {
+app.get("/health", (_req: Request, res: Response) => {
   res.json({
     status: "healthy",
     service: "CID Management Service",
@@ -18,7 +18,7 @@ app.get("/health", (req: Request, res: Response) => {
   });
 });
 
-app.get("/api/cid", (req: Request, res: Response) => {
+app.get("/api/cid", (_req: Request, res: Response) => {
   try {
     const cid = cidManager.getNextCID();
 
@@ -40,7 +40,7 @@ app.get("/api/cid", (req: Request, res: Response) => {
   }
 });
 
-app.post("/api/cid", (req: Request, res: Response) => {
+app.post("/api/cid", (_req: Request, res: Response) => {
   try {
     const cid = cidManager.getNextCID();
 
@@ -73,7 +73,7 @@ app.get("/api/cid/:cid/check", (req: Request, res: Response) => {
   });
 });
 
-app.get("/api/stats", (req: Request, res: Response) => {
+app.get("/api/stats", (_req: Request, res: Response) => {
   res.json({
     total: cidManager.getTotalCount(),
     used: cidManager.getUsedCount(),
@@ -82,7 +82,7 @@ app.get("/api/stats", (req: Request, res: Response) => {
   });
 });
 
-app.use((req: Request, res: Response) => {
+app.use((_req: Request, res: Response) => {
   res.status(404).json({
     error: "Endpoint not found",
     availableEndpoints: {
@@ -95,7 +95,7 @@ app.use((req: Request, res: Response) => {
   });
 });
 
-app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((error: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error("Unhandled error:", error);
   res.status(500).json({
     error: "Internal server error",
