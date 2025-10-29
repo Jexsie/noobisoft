@@ -40,3 +40,6 @@ Thumbs.db
 coverage/
 .nyc_output/
 
+
+dino-metadata/
+pixel-metadata/
