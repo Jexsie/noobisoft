@@ -18,7 +18,6 @@ app.get("/health", (_req: Request, res: Response) => {
   });
 });
 
-// Main endpoint: Get a new unique CID for a specific game
 app.get("/api/cid", (req: Request, res: Response) => {
   try {
     const game = req.query.game as string;
@@ -35,7 +34,7 @@ app.get("/api/cid", (req: Request, res: Response) => {
     const cid = cidManager.getNextCID(game);
     const stats = cidManager.getGameStats(game);
 
-    res.json({
+    return res.json({
       success: true,
       game: game,
       cid: cid,
@@ -44,7 +43,7 @@ app.get("/api/cid", (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Error getting CID:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Failed to get CID",
       message: error instanceof Error ? error.message : String(error),
@@ -52,7 +51,6 @@ app.get("/api/cid", (req: Request, res: Response) => {
   }
 });
 
-// Alternative POST endpoint for consistency with REST standards
 app.post("/api/cid", (req: Request, res: Response) => {
   try {
     const { game } = req.body;
@@ -70,7 +68,7 @@ app.post("/api/cid", (req: Request, res: Response) => {
     const cid = cidManager.getNextCID(game);
     const stats = cidManager.getGameStats(game);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       game: game,
       cid: cid,
@@ -79,7 +77,7 @@ app.post("/api/cid", (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Error getting CID:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: "Failed to get CID",
       message: error instanceof Error ? error.message : String(error),
