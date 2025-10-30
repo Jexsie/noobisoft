@@ -1,0 +1,34 @@
+{
+  "name": "nobi-service",
+  "version": "1.0.0",
+  "description": "CID Management Service - Returns unique CIDs that are never reused",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/server.js",
+    "dev": "tsx src/server.ts",
+    "dev:watch": "tsx watch src/server.ts",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "cid",
+    "pinata",
+    "unique-id",
+    "service"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "pinata": "^2.5.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.4.2",
+    "nodemon": "^3.0.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.1.6"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "leaderboard": [
+    {
+      "rank": 1,
+      "name": "SPEEDKING",
+      "score": 3200,
+      "wallet": "0.0.123456",
+      "timestamp": "2025-01-20T10:30:00Z"
+    },
+    {
+      "rank": 2,
+      "name": "RACER_X",
+      "score": 2800,
+      "wallet": "0.0.234567",
+      "timestamp": "2025-01-20T09:15:00Z"
+    },
+    {
+      "rank": 3,
+      "name": "TEST_PLAYER",
+      "score": 2115,
+      "wallet": "0.0.5231873",
+      "timestamp": "2025-10-22T05:02:13.379Z"
+    },
+    {
+      "rank": 4,
+      "name": "PIXEL_PRO",
+      "score": 2000,
+      "wallet": "0.0.345678",
+      "timestamp": "2025-01-19T18:45:00Z"
+    },
+    {
+      "rank": 5,
+      "name": "TURBO_TOM",
+      "score": 1750,
+      "wallet": "0.0.456789",
+      "timestamp": "2025-01-19T14:20:00Z"
+    },
+    {
+      "rank": 6,
+      "name": "DRIFT_QUEEN",
+      "score": 1500,
+      "wallet": "0.0.567890",
+      "timestamp": "2025-01-18T22:10:00Z"
+    }
+  ]
+}
