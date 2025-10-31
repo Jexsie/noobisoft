@@ -1068,7 +1068,7 @@ async function populateThemeSlots() {
         const originAttr = Array.isArray(nft.attributes)
           ? nft.attributes.find((a) => a?.trait_type === "origin_game")
           : null;
-        const origin = originAttr?.value ? ` — game: ${originAttr.value}` : "";
+        const origin = originAttr?.value ? ` — ${originAttr.value}` : "";
         label.textContent = `${nft.name || "Unnamed NFT"}${origin}`;
 
         slot.dataset.metadata = JSON.stringify(nft);
