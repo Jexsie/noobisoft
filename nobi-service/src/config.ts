@@ -3,7 +3,7 @@ export interface Config {
 }
 
 const config: Config = {
-  port: parseInt(process.env.PORT || "3001", 10),
+  port: parseInt(process.env.PORT || "3002", 10),
 };
 
 export default config;
