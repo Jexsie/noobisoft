@@ -174,7 +174,7 @@ export async function getNftsForUser(accountId) {
 
   try {
     const res = await fetch(
-      `https://testnet.mirrornode.hedera.com/api/v1/accounts/${accountId}/nfts?limit=4&order=desc}`
+      `https://testnet.mirrornode.hedera.com/api/v1/accounts/${accountId}/nfts?limit=4&order=desc`
     );
 
     if (!res.ok) {
