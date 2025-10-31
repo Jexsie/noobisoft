@@ -106,5 +106,5 @@ Run projects independently from their directories:
 ## References
 
 - Core of the idea: [Hendrik Ebber's blog](https://dev.to/hendrikebbers/gaming-web3-how-an-open-and-secure-future-of-ownership-in-games-could-look-2ihf)
-- Pitch deck: https://docs.google.com/document/d/1KC-nNTlZR1RWwSruRax3luSGGwThQFjrLDImeImp9Oc/edit?usp=sharing
+- Pitch deck: https://drive.google.com/file/d/1ttsARqAKXrZPAlZ-h2hwRiJuvci1i_iP/view?usp=sharing
 - Jessy Hedera Certificate: https://certs.hashgraphdev.com/0eff0f37-9f80-40d2-b35a-de24e8bc63a4.pdf
