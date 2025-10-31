@@ -20,7 +20,14 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:8080", "https://dino.open-elements.cloud"],
+    origin: [
+      "http://localhost:8080", // static preview/start
+      "http://localhost:5173", // Vite dev default
+      "http://127.0.0.1:5173",
+      "http://localhost:4173", // Vite preview default
+      "http://127.0.0.1:4173",
+      "https://dino.open-elements.cloud",
+    ],
     credentials: true,
   })
 );
@@ -29,6 +36,9 @@ app.use(bodyParser.json());
 
 dotenv.config();
 
+const CID_SERVICE = process.env.CID_SERVICE;
+
+console.log("CID_SERVICE", CID_SERVICE);
 const PORT = process.env.PORT || 3000;
 
 const __filename = fileURLToPath(import.meta.url);
