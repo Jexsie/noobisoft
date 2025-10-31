@@ -1,0 +1,119 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint64",
+						"name": "amount",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bytes[]",
+						"name": "metadata",
+						"type": "bytes[]"
+					}
+				],
+				"name": "mintToken",
+				"outputs": [
+					{
+						"internalType": "int64",
+						"name": "responseCode",
+						"type": "int64"
+					},
+					{
+						"internalType": "int64",
+						"name": "newTotalSupply",
+						"type": "int64"
+					},
+					{
+						"internalType": "int64[]",
+						"name": "serialNumbers",
+						"type": "int64[]"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "recipient",
+						"type": "address"
+					},
+					{
+						"internalType": "int64",
+						"name": "serial",
+						"type": "int64"
+					}
+				],
+				"name": "transferToken",
+				"outputs": [
+					{
+						"internalType": "int64",
+						"name": "responseCode",
+						"type": "int64"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/dino-nft-mint.sol": "IHederaTokenService"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/dino-nft-mint.sol": {
+			"keccak256": "0x7f61d2c6fe2667364b33c2459591420b1bc55190069ca2e36449c1c3d3d5d018",
+			"license": "Apache-2.0",
+			"urls": [
+				"bzz-raw://770bc41914f1537a1374d9aa3c1782db4ddd3059f9a7c8e413258dca83547ee6",
+				"dweb:/ipfs/Qma53jwfzMgQ9ZwUBqQTztGgppXGbQ36HbqQng9WgtjBZj"
+			]
+		}
+	},
+	"version": 1
+}
