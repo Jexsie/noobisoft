@@ -174,7 +174,7 @@ export async function getNftsForUser(accountId) {
 
   try {
     const res = await fetch(
-      `https://testnet.mirrornode.hedera.com/api/v1/accounts/${accountId}/nfts?limit=4&order=desc&token.id=${TOKEN_ID.toString()}`
+      `https://testnet.mirrornode.hedera.com/api/v1/accounts/${accountId}/nfts?limit=4&order=desc}`
     );
 
     if (!res.ok) {
@@ -190,6 +190,17 @@ export async function getNftsForUser(accountId) {
 
         const metaUrl = normalizeIpfsUri(decoded);
         const metadata = await fetchMetadata(metaUrl);
+
+        // Only loads NFTs that are of type "Skin"
+        const attrs = Array.isArray(metadata?.attributes)
+          ? metadata.attributes
+          : [];
+        const category = attrs.find(
+          (a) => a?.trait_type === "item_category"
+        )?.value;
+        if (!category || String(category).toLowerCase() !== "skin") {
+          continue;
+        }
 
         // Normalize image uri to a gateway URL
         const normalizedImage = normalizeIpfsUri(metadata?.image);
