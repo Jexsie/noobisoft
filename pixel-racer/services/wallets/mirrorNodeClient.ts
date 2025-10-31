@@ -124,14 +124,13 @@ export class MirrorNodeClient {
 
       for (const nft of data?.nfts) {
         try {
-          const url = this.decodeNftMetadata(nft.metadata);
-          const metadata = await this.fetchMetadata(this.normalizeIpfsUri(url));
-          const normalizedImage = this.normalizeIpfsUri(
-            (metadata as any)?.image ||
-              (metadata as any)?.file_url ||
-              (metadata as any)?.files?.[0]?.uri ||
-              ""
+          const decoded = this.decodeNftMetadata(nft.metadata);
+
+          const metadata = await this.fetchMetadata(
+            this.normalizeIpfsUri(decoded)
           );
+
+          const normalizedImage = this.normalizeIpfsUri(metadata?.image);
           allNfts.push({
             ...nft,
             metadataJson: {
@@ -140,7 +139,7 @@ export class MirrorNodeClient {
             },
           });
         } catch (err) {
-          console.error("Failed to fetch metadata for NFT", nft, err);
+          console.error("Failed to parse metadata for NFT", nft, err);
         }
       }
 
@@ -191,12 +190,36 @@ export class MirrorNodeClient {
   normalizeIpfsUri(uri: string): string {
     if (!uri) return "";
 
+    // If http(s), passthrough
+    if (/^https?:\/\//i.test(uri)) return uri;
+
+    const gateway =
+      process.env.NEXT_PUBLIC_PINATA_GATEWAY || "https://gateway.pinata.cloud";
+
+    // ipfs:// or ipfs://ipfs/
     if (uri.startsWith("ipfs://")) {
-      const cid = uri.replace("ipfs://", "");
-      return `${
-        process.env.NEXT_PUBLIC_PINATA_GATEWAY || "https://gateway.pinata.cloud"
-      }/ipfs/${cid}`;
+      const cidPath = uri.replace(/^ipfs:\/\//i, "").replace(/^ipfs\//i, "");
+      return `${gateway}/ipfs/${cidPath}`;
     }
+
+    // /ipfs/<cid>[/path] or ipfs/<cid>[/path]
+    if (/^\/?ipfs\//i.test(uri)) {
+      const cidPath = uri.replace(/^\/?ipfs\//i, "");
+      return `${gateway}/ipfs/${cidPath}`;
+    }
+
+    // /ipns/<name> or ipns/<name>
+    if (/^\/?ipns\//i.test(uri)) {
+      const namePath = uri.replace(/^\/?ipns\//i, "");
+      return `${gateway}/ipns/${namePath}`;
+    }
+
+    // Bare CID with optional path
+    const cidLike = /^[a-z0-9]{46,}(?:\/.*)?$/i;
+    if (cidLike.test(uri)) {
+      return `${gateway}/ipfs/${uri}`;
+    }
+
     return uri;
   }
 
