@@ -20,14 +20,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:8080", // static preview/start
-      "http://localhost:5173", // Vite dev default
-      "http://127.0.0.1:5173",
-      "http://localhost:4173", // Vite preview default
-      "http://127.0.0.1:4173",
-      "https://dino.open-elements.cloud",
-    ],
+    origin: ["http://localhost:8080", "https://dino.open-elements.cloud"],
     credentials: true,
   })
 );
@@ -70,6 +63,7 @@ app.get("/api/mint-nft/:receiverAddress", async (req, res) => {
 });
 
 async function mintNft(receiverAddress) {
+  console.log("Minting NFT for receiver:", receiverAddress);
   const cid = await getNewCID();
   const mintToken = new ContractExecuteTransaction()
     .setContractId(contractId)

@@ -798,7 +798,6 @@ async function useNFT() {
       layout: [false, clothingColor, "#333333", "#ffffff", "#ff0000", false],
     };
 
-    console.log("NFT theme applied:", current_theme);
     localStorage.setItem("dino_theme", JSON.stringify(current_theme));
     repaintOnce();
   } catch (err) {
@@ -1048,7 +1047,6 @@ function applyNFTTheme(metadata) {
     layout: [false, clothingColor, "#333333", "#ffffff", "#ff0000", false],
   };
 
-  console.log("NFT theme applied:", current_theme);
   localStorage.setItem("dino_theme", JSON.stringify(current_theme));
   repaintOnce();
 }
