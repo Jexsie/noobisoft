@@ -163,23 +163,40 @@ export async function getNftsForUser(accountId) {
   const results = [];
 
   try {
+    // Fetch recent NFTs for the account (no token filter → enables cross-game)
     const res = await fetch(
-      `https://testnet.mirrornode.hedera.com/api/v1/accounts/${accountId}/nfts?limit=4&order=desc&token.id=${TOKEN_ID.toString()}`
+      `https://testnet.mirrornode.hedera.com/api/v1/accounts/${accountId}/nfts?limit=25&order=desc`
     );
 
     if (!res.ok) {
       const errorData = await res.json();
-      throw new Error(errorData.error || "Backend minting failed.");
+      throw new Error(errorData.error || "Mirror Node request failed.");
     }
 
     const data = await res.json();
 
-    for (const nft of data?.nfts) {
+    for (const nft of data?.nfts || []) {
       try {
         const url = decodeMetadata(nft.metadata);
         const metadata = await fetchMetadata(normalizeIpfsUri(url));
+
+        // Filter: only load NFTs that are item_category === "Skin"
+        const attrs = Array.isArray(metadata?.attributes)
+          ? metadata.attributes
+          : [];
+        const category = attrs.find(
+          (a) => a?.trait_type === "item_category"
+        )?.value;
+        if (!category || String(category).toLowerCase() !== "skin") continue;
+
+        // Normalize image field
+        const image = normalizeIpfsUri(
+          metadata?.image || metadata?.file_url || metadata?.files?.[0]?.uri
+        );
+
         results.push({
           ...metadata,
+          image,
           tokenId: nft.token_id,
           serial: nft.serial_number,
         });

@@ -1067,7 +1067,11 @@ async function populateThemeSlots() {
       if (nft) {
         img.src = normalizeIpfsUri(nft.image) || "/dino.png";
         img.alt = nft.name || "NFT";
-        label.textContent = nft.name || "Unnamed NFT";
+        const originAttr = Array.isArray(nft.attributes)
+          ? nft.attributes.find((a) => a?.trait_type === "origin_game")
+          : null;
+        const origin = originAttr?.value ? ` — game: ${originAttr.value}` : "";
+        label.textContent = `${nft.name || "Unnamed NFT"}${origin}`;
 
         slot.dataset.metadata = JSON.stringify(nft);
         slot.onclick = () => applyNFTTheme(nft);
