@@ -126,11 +126,17 @@ export class MirrorNodeClient {
         try {
           const url = this.decodeNftMetadata(nft.metadata);
           const metadata = await this.fetchMetadata(this.normalizeIpfsUri(url));
+          const normalizedImage = this.normalizeIpfsUri(
+            (metadata as any)?.image ||
+              (metadata as any)?.file_url ||
+              (metadata as any)?.files?.[0]?.uri ||
+              ""
+          );
           allNfts.push({
             ...nft,
             metadataJson: {
-              ...metadata,
-              image: this.normalizeIpfsUri(metadata.file_url),
+              ...(metadata as any),
+              image: normalizedImage,
             },
           });
         } catch (err) {

@@ -17,8 +17,6 @@ function initModals() {
   storeModal = document.getElementById("storeModal");
   storeList = document.getElementById("storeList");
 
-  console.log("Modal elements:", { storeBtn, storeModal, storeList });
-
   if (!storeBtn || !storeModal || !storeList) {
     console.error("Store modal elements not found");
     return false;

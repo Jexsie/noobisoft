@@ -29,6 +29,9 @@ app.use(bodyParser.json());
 
 dotenv.config();
 
+const CID_SERVICE = process.env.CID_SERVICE;
+
+console.log("CID_SERVICE", CID_SERVICE);
 const PORT = process.env.PORT || 3000;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -60,6 +63,7 @@ app.get("/api/mint-nft/:receiverAddress", async (req, res) => {
 });
 
 async function mintNft(receiverAddress) {
+  console.log("Minting NFT for receiver:", receiverAddress);
   const cid = await getNewCID();
   const mintToken = new ContractExecuteTransaction()
     .setContractId(contractId)

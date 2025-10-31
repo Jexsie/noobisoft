@@ -41,6 +41,15 @@ export default function NFTCarSkins({
     console.log(`Car skin changed to: ${name} (${color})`);
   };
 
+  // Filter: only NFTs with item_category === "Skin"
+  const filteredSkins = (nftSkins || []).filter((n) =>
+    (n?.metadataJson?.attributes || []).some(
+      (a: any) =>
+        a?.trait_type === "item_category" &&
+        String(a?.value).toLowerCase() === "skin"
+    )
+  );
+
   return (
     <aside className="right-sidebar">
       <div className="sidebar-panel">
@@ -69,7 +78,7 @@ export default function NFTCarSkins({
               <div className="loading-spinner"></div>
               <p className="nft-loading-text">Loading your NFT skins...</p>
             </div>
-          ) : nftSkins.length === 0 ? (
+          ) : filteredSkins.length === 0 ? (
             <div className="nft-empty-state">
               <div className="nft-empty-icon">📭</div>
               <p className="nft-empty-text">
@@ -83,13 +92,13 @@ export default function NFTCarSkins({
           ) : (
             <>
               <p className="nft-description">
-                {nftSkins.length} NFT skin{nftSkins.length > 1 ? "s" : ""}{" "}
-                found!
+                {filteredSkins.length} NFT skin
+                {filteredSkins.length > 1 ? "s" : ""} found!
               </p>
 
               <div className="nft-grid">
                 {/* NFT skins from user's wallet */}
-                {nftSkins.map((nftSkin) => (
+                {filteredSkins.map((nftSkin) => (
                   <button
                     key={`${nftSkin.token_id}-${nftSkin.serial_number}`}
                     className={`nft-slot nft-skin ${
@@ -143,9 +152,16 @@ export default function NFTCarSkins({
                       )}
                     </div>
                     <div className="nft-name nft-serial">
-                      #{nftSkin.metadataJson?.name || ""} - #
-                      {nftSkin.metadataJson?.custom_fields?.game?.name || ""} -
-                      #{nftSkin.serial_number}
+                      {nftSkin.metadataJson?.name || ""}
+                      {(() => {
+                        const attrs = nftSkin.metadataJson?.attributes || [];
+                        const origin = attrs.find(
+                          (attribute: any) =>
+                            attribute?.trait_type === "origin_game"
+                        )?.value;
+                        return origin ? ` — game: ${origin}` : "";
+                      })()}
+                      {` — #${nftSkin.serial_number}`}
                     </div>
                   </button>
                 ))}

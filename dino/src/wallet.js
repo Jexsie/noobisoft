@@ -20,8 +20,6 @@ const PROJECT_ID = import.meta.env.VITE_PROJECT_ID;
 const PINATA_GATEWAY = import.meta.env.VITE_PINATA_GATEWAY;
 const TOKEN_ID = TokenId.fromString(import.meta.env.VITE_TOKEN_ID);
 
-console.log(PROJECT_ID, "asdfsada");
-
 const metadata = {
   name: "Dino - Blockchain Game",
   description: "Pixel Dino on Hedera",
@@ -159,6 +157,18 @@ export async function mintForHighScore(highScore) {
   }
 }
 
+function isProbablyJson(text) {
+  if (typeof text !== "string") return false;
+  const t = text.trim();
+  if (!t.startsWith("{") && !t.startsWith("[")) return false;
+  try {
+    JSON.parse(t);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function getNftsForUser(accountId) {
   const results = [];
 
@@ -176,10 +186,17 @@ export async function getNftsForUser(accountId) {
 
     for (const nft of data?.nfts) {
       try {
-        const url = decodeMetadata(nft.metadata);
-        const metadata = await fetchMetadata(normalizeIpfsUri(url));
+        const decoded = decodeMetadata(nft.metadata);
+
+        const metaUrl = normalizeIpfsUri(decoded);
+        const metadata = await fetchMetadata(metaUrl);
+
+        // Normalize image uri to a gateway URL
+        const normalizedImage = normalizeIpfsUri(metadata?.image);
+
         results.push({
           ...metadata,
+          image: normalizedImage,
           tokenId: nft.token_id,
           serial: nft.serial_number,
         });
@@ -234,9 +251,32 @@ function decodeMetadata(base64Metadata) {
 export function normalizeIpfsUri(uri) {
   if (!uri) return null;
 
+  // If already an http(s) URL, return as-is
+  if (/^https?:\/\//i.test(uri)) return uri;
+
+  // ipfs:// or ipfs://ipfs/
   if (uri.startsWith("ipfs://")) {
-    const cid = uri.replace("ipfs://", "");
-    return `${PINATA_GATEWAY}/ipfs/${cid}`;
+    const cidPath = uri.replace(/^ipfs:\/\//i, "").replace(/^ipfs\//i, "");
+    return `${PINATA_GATEWAY}/ipfs/${cidPath}`;
   }
+
+  // /ipfs/<cid>[/path] or ipfs/<cid>[/path]
+  if (/^\/?ipfs\//i.test(uri)) {
+    const cidPath = uri.replace(/^\/?ipfs\//i, "");
+    return `${PINATA_GATEWAY}/ipfs/${cidPath}`;
+  }
+
+  // /ipns/<name> or ipns/<name>
+  if (/^\/?ipns\//i.test(uri)) {
+    const namePath = uri.replace(/^\/?ipns\//i, "");
+    return `${PINATA_GATEWAY}/ipns/${namePath}`;
+  }
+
+  // Bare CID (v0/v1) optionally with a path, e.g. bafy.../metadata.json
+  const cidLike = /^[a-z0-9]{46,}(?:\/.*)?$/i;
+  if (cidLike.test(uri)) {
+    return `${PINATA_GATEWAY}/ipfs/${uri}`;
+  }
+
   return uri;
 }
